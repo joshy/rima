@@ -37,6 +37,9 @@ def main():
 def transfer():
     """ Receive jobs and process them """
     data = request.get_json(force=True)
+    id = data.get('id')
+    with open(os.path.join('work', (str(id) + '.json')), 'w') as workfile:
+        json.dump(data, workfile)
     headers = {"content-type": "application/json"}
     response = post(MOVA_DOWNLOAD_URL, json=data, headers=headers)
     return jsonify({"status": "success"})
@@ -44,5 +47,5 @@ def transfer():
 
 @app.route("/analyze")
 def analyze():
-    
+
     return jsonify({"status":"ok"})
