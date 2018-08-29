@@ -39,6 +39,10 @@ def transfer():
     data = request.get_json(force=True)
     headers = {"content-type": "application/json"}
     response = post(MOVA_DOWNLOAD_URL, json=data, headers=headers)
-    print(response)
-    print(response.text)
     return jsonify({"status": "success"})
+
+
+@app.route("/analyze")
+def analyze():
+    
+    return jsonify({"status":"ok"})
