@@ -1,0 +1,10 @@
+Flask
+Flask-Assets
+luigi
+rq
+pydicom
+scikit-image
+redis
+requests
+daiquiri
+sklearn
