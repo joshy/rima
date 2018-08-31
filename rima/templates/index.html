@@ -9,11 +9,23 @@
 
 <body class="w-100 sans-serif">
   {% include 'partials/header.html' %}
+
+  <h1 class="b--black-10 mw8 center pt2">Results</h1>
+  <div class="b--black-10 mw8 center pt2">
+    {% for result in results %}
+      {{result}}
+    {% endfor%}
+  </div>
+
   <h1 class="b--black-10 mw8 center pt2">Current jobs</h1>
   <div class="b--black-10 mw8 center pt2">
     {% for job in jobs %}
       {{ job }}
     {% endfor %}
+
+    {% for work in worklist %}
+      {{work}}
+    {% endfor%}
   </div>
 
   {% assets "js_all" %}

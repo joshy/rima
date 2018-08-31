@@ -9,12 +9,15 @@ from redis import Redis
 from requests import post
 from rq import Queue
 
+from rima.executor import copd, enrich_workpaths
+
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile("config.cfg", silent=True)
 
 MOVA_DASHBOARD_URL = app.config["MOVA_DASHBOARD_URL"]
 MOVA_DOWNLOAD_URL = app.config["MOVA_DOWNLOAD_URL"]
 MOVA_TRANSFER_URL = app.config["MOVA_TRANSFER_URL"]
+
 IMAGE_FOLDER = app.config["IMAGE_FOLDER"]
 
 version = app.config["VERSION"] = "0.0.1"
@@ -25,6 +28,8 @@ js = Bundle(
 )
 assets.register("js_all", js)
 
+
+WORK_DIR = "work/inbox"
 
 @app.route("/")
 def main():
@@ -37,8 +42,9 @@ def main():
 def transfer():
     """ Receive jobs and process them """
     data = request.get_json(force=True)
-    id = data.get('id')
-    with open(os.path.join('work', (str(id) + '.json')), 'w') as workfile:
+    id = data.get("id")
+    data = enrich_workpaths(IMAGE_FOLDER, data)
+    with open(os.path.join(WORK_DIR, (str(id) + ".json")), "w") as workfile:
         json.dump(data, workfile)
     headers = {"content-type": "application/json"}
     response = post(MOVA_DOWNLOAD_URL, json=data, headers=headers)
@@ -47,5 +53,8 @@ def transfer():
 
 @app.route("/analyze")
 def analyze():
-
-    return jsonify({"status":"ok"})
+    worklist = list(WORK_DIR)
+    print("Number of exams to process: {}".format(len(worklist)))
+    for w in worklist:
+        copd(os.path.join(IMAGE_FOLDER, w))
+    return jsonify({"status": "ok"})
