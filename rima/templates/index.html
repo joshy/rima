@@ -9,20 +9,49 @@
 
 <body class="w-100 sans-serif">
   {% include 'partials/header.html' %}
-
-  <h1 class="b--black-10 mw8 center pt2">Results</h1>
   <div class="b--black-10 mw8 center pt2">
-    {% for result in results %}
-      {{result}}
-    {% endfor%}
+      <h2 class="b--black-10 mw8 center pt2 h6">Results - COPD</h2>
+      <div class="overflow-auto">
+          <table class="f6 w-100 center" cellspacing="0">
+              <thead>
+              <tr>
+                  <th class="fw6 bb bw1 b--black-80 tl pb2 pl0 pa1 bg-white">#</th>
+                  <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white w-20">PatientID</th>
+                  <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white w-25 tl">AccessionNumber</th>
+                  <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white tl">SeriesNumber</th>
+                  <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white tr pl3">LAA-950</th>
+                  <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white tr pl3">LAA-900</th>
+                  <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white tr v">LAA-850</th>
+                  <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white tr pl3">PD15</th>
+              </tr>
+              </thead>
+              <tbody class="lh-copy" style="padding: auto">
+                {% for result in results %}
+                  <tr>
+                      <td class="pl0 pa1 bb b--black-10 w-5">{{ loop.index }}</td>
+                      <td class="pa1 bb b--black-10 w-25">{{ result['patient_id'] }}</td>
+                      <td class="pa1 bb b--black-10 w-25 tl">{{ result['accession_number'] }}</td>
+                      <td class="pa1 bb b--black-10 w-25 tl">{{ result['series_number'] }}</td>
+                      <td class="pa1 bb b--black-10 tr pl3">{{ result['copd']['LAA-950'] | round  }}</td>
+                      <td class="pa1 bb b--black-10 tr pl3">{{ result['copd']['LAA-900'] | round }}</td>
+                      <td class="pa1 bb b--black-10 tr pl3">{{ result['copd']['LAA-850']  | round }}</td>
+                      <td class="pa1 bb b--black-10 tr pl3">{{ result['copd']['pd15'] | round }}</td>
+                  </tr>
+              {% endfor %}
+              </tbody>
+          </table>
+      </div>
   </div>
 
   <h1 class="b--black-10 mw8 center pt2">Current jobs</h1>
   <div class="b--black-10 mw8 center pt2">
-    {% for job in jobs %}
-      {{ job }}
-    {% endfor %}
-
+    {% if jobs %}
+      {% for job in jobs %}
+        {{ job }}
+      {% endfor %}
+    {% else %}
+    <span>No jobs at the moment...</span>
+    {% endif %}
     {% for work in worklist %}
       {{work}}
     {% endfor%}

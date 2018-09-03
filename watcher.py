@@ -9,6 +9,12 @@ from copd.task import COPD
 
 queue = Queue("copd", connection=Redis())
 
+def generate_key(entry):
+    pid = entry["patient_id"]
+    accession_nr = entry["accession_number"]
+    series_nr = entry["series_number"]
+    return pid + "_" + accession_nr + "_" + series_nr
+
 
 def read_work():
     work_files = glob.glob("work/inbox/*.json")
@@ -30,8 +36,8 @@ class COPDWatcher(luigi.Task):
             if download_job is None:
                 print("Job with id {} not anymore in queue".format(job_id))
                 for entry in job['data']:
-                    d = yield COPD(entry)
-                    print(d)
+                    key=generate_key(entry)
+                    yield COPD(entry, key)
             else:
                 print("Job with id {} is still in queue".format(job_id))
 
