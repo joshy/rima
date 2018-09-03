@@ -1,4 +1,4 @@
-import json
+
 import timeit
 
 import numpy as np
@@ -6,7 +6,6 @@ from skimage import measure, morphology
 from skimage.transform import resize
 from sklearn.cluster import KMeans
 
-import luigi
 from copd.loader import load_exam
 
 
@@ -118,7 +117,7 @@ def analyze(exam_path):
     percentile = 15
     rank = int(len(hu_values) * percentile / 100)
 
-    pd15 = hu_values[rank]
+    pd15 = int(hu_values[rank])
 
     result = {}
     result["pd15"] = pd15
@@ -130,21 +129,3 @@ def analyze(exam_path):
         result[key] = count * voxel_volume
 
     return result
-
-
-
-class COPD(luigi.Task):
-    data = luigi.DictParameter()
-    key = ""
-
-    def run(self):
-        pid = self.data["patient_id"]
-        accession_nr = self.data["accession_number"]
-        series_nr = self.data["series_number"]
-        self.key = pid + "_" + accession_nr + "_" + series_nr
-        print(self.key)
-        with self.output().open('w') as outfile:
-            json.dump({'status':'done'}, outfile)
-
-    def output(self):
-        return luigi.LocalTarget('work/results/%s.json' % self.key)

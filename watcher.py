@@ -5,7 +5,7 @@ import luigi
 import json
 import glob
 
-from copd.process import COPD
+from copd.task import COPD
 
 queue = Queue("copd", connection=Redis())
 
