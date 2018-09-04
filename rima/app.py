@@ -9,7 +9,7 @@ from redis import Redis
 from requests import post
 from rq import Queue
 
-from copd.results import results
+from copd.results import results, load_result
 from rima.executor import copd, process
 from rima.work import work_items
 
@@ -33,6 +33,14 @@ assets.register("js_all", js)
 
 WORK_INBOX_DIR = "work/inbox"
 WORK_RESULTS_DIR = "work/results"
+
+
+@app.template_filter("to_date")
+def to_date(date_as_int):
+    if date_as_int:
+        return datetime.strptime(str(date_as_int), "%Y%m%d").strftime("%d.%m.%Y")
+    else:
+        return ""
 
 
 @app.route("/")
@@ -63,10 +71,9 @@ def transfer():
         return "Post failed", 500
 
 
-@app.route("/analyze")
-def analyze():
-    worklist = list(WORK_INBOX_DIR)
-    print("Number of exams to process: {}".format(len(worklist)))
-    for w in worklist:
-        copd(os.path.join(IMAGE_FOLDER, w))
-    return jsonify({"status": "ok"})
+@app.route("/copd/show")
+def details():
+    key = request.args.get("key", "")
+    result = load_result(WORK_RESULTS_DIR, key)
+    print(result)
+    return render_template("copd_result.html", result=result, version=version)

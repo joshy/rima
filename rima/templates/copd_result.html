@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>RIMA Server</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/tachyons.min.css') }}">
+    <link rel="stylesheet" href="{{url_for('static', filename='css/all.min.css') }}">
+
+</head>
+
+<body class="w-100 sans-serif">
+    {% include 'partials/header.html' %}
+    <div class="b--black-10 mw8 center pt2">
+        <h2 class="b--black-10 mw8 center pt2 h6">COPD</h2>
+        <div>
+            <article class="pa2">
+                <dl class="dib mr3">
+                    <dd class="f6 f6-ns ml0">Patiend ID</dd>
+                    <dd class="f5 f5-ns b ml0">{{ result['patient_id'] }}</dd>
+                </dl>
+                <dl class="dib mr3">
+                    <dd class="f6 f6-ns ml0">Birthdate</dd>
+                    <dd class="f5 f5-ns b ml0">{{ result['patient_birth_date'] | to_date }}</dd>
+                </dl>
+                <dl class="dib mr3">
+                    <dd class="f6 f6-ns ml0">Accession Number</dd>
+                    <dd class="f5 f5-ns b ml0">{{ result['accession_number'] }}</dd>
+                </dl>
+                <dl class="dib mr3">
+                    <dd class="f6 f6-ns ml0">Series Number</dd>
+                    <dd class="f5 f5-ns b ml0">{{ result['series_number'] }}</dd>
+                </dl>
+
+                <dl class="dib mr3">
+                    <dd class="f6 f6-ns ml0">StudyDescription</dd>
+                    <dd class="f5 f5-ns b ml0">{{ result['study_description'] }}</dd>
+                </dl>
+                <dl class="dib mr3">
+                    <dd class="f6 f6-ns ml0">Study Date</dd>
+                    <dd class="f5 f5-ns b ml0">{{ result['study_date'] | to_date }}</dd>
+                </dl>
+
+            </article>
+        </div>
+    </div>
+
+    {% assets "js_all" %}
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script> {% endassets %}
+</body>
+
+</html>
