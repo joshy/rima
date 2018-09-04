@@ -14,8 +14,9 @@ def load_exam(dir_path):
 def _load_scan(path):
     slices = [pydicom.dcmread(path + "/" + s) for s in os.listdir(path)]
     slices.sort(key=lambda x: int(x.InstanceNumber))
-    if not slices:
-        return None
+    if len(slices) == 0:
+        raise ValueError("DICOM folder {} seems to be empty, aborting".format(path))
+
     try:
         slice_thickness = np.abs(
             slices[0].ImagePositionPatient[2] - slices[1].ImagePositionPatient[2]

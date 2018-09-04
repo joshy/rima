@@ -28,9 +28,7 @@ class COPDWatcher(luigi.Task):
         for j in jobs:
             job_id = str(j["job_id"])
             download_job = queue.fetch_job(job_id)
-            if download_job is None:
-                print("No job found with id {}".format(job_id))
-            elif download_job.get_status() == job.JobStatus.FINISHED:
+            if download_job is None or download_job.get_status() == job.JobStatus.FINISHED:
                 print(
                     "Download task with id {} finised, starting COPD processing".format(
                         job_id

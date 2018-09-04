@@ -78,8 +78,6 @@ def make_lungmask(img):
 
 def analyze(exam_path):
     patient, imgs = load_exam(exam_path)
-    if patient or imgs is None:
-        return None
 
     logging.info("Finised loading image on folder: {}".format(exam_path))
     masked_lung = []
