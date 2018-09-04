@@ -6,14 +6,9 @@ import json
 import glob
 
 from copd.task import COPD
+from rima.work import key
 
 queue = Queue("copd", connection=Redis())
-
-def generate_key(entry):
-    pid = entry["patient_id"]
-    accession_nr = entry["accession_number"]
-    series_nr = entry["series_number"]
-    return pid + "_" + accession_nr + "_" + series_nr
 
 
 def read_work():
@@ -30,14 +25,12 @@ class COPDWatcher(luigi.Task):
     def run(self):
         jobs = read_work()
         for job in jobs:
-            job_id = str(job['id'])
+            job_id = str(job["key"])
 
             download_job = queue.fetch_job(job_id)
             if download_job is None:
-                print("Job with id {} not anymore in queue".format(job_id))
-                for entry in job['data']:
-                    key=generate_key(entry)
-                    yield COPD(entry, key)
+                print("Download task with id {} not anymore in queue".format(job_id))
+                yield COPD(job, key(job))
             else:
                 print("Job with id {} is still in queue".format(job_id))
 

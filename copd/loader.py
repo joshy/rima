@@ -14,20 +14,22 @@ def load_exam(dir_path):
 def _load_scan(path):
     slices = [pydicom.dcmread(path + "/" + s) for s in os.listdir(path)]
     slices.sort(key=lambda x: int(x.InstanceNumber))
+    if not slices:
+        return None
     try:
         slice_thickness = np.abs(
             slices[0].ImagePositionPatient[2] - slices[1].ImagePositionPatient[2]
         )
     except:
         slice_thickness = np.abs(slices[0].SliceLocation - slices[1].SliceLocation)
-
     for s in slices:
         s.SliceThickness = slice_thickness
-
     return slices
 
 
 def _get_pixels_hu(scans):
+    if not scans:
+        return None
     image = np.stack([s.pixel_array for s in scans])
     # Convert to int16 (from sometimes int16),
     # should be possible as values should always be low enough (<32k)

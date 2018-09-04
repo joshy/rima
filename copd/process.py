@@ -1,4 +1,5 @@
 
+import logging
 import timeit
 
 import numpy as np
@@ -77,15 +78,18 @@ def make_lungmask(img):
 
 def analyze(exam_path):
     patient, imgs = load_exam(exam_path)
-    print("Finised loading image on folder: {}".format(exam_path))
+    if patient or imgs is None:
+        return None
+
+    logging.info("Finised loading image on folder: {}".format(exam_path))
     masked_lung = []
 
-    print("Start lung segmentation")
+    logging.info("Start lung segmentation")
     start = timeit.default_timer()
     for img in imgs:
         masked_lung.append(make_lungmask(img))
     stop = timeit.default_timer()
-    print("Finised lung segmentation, took {}s".format(stop - start))
+    logging.info("Finised lung segmentation, took {}s".format(stop - start))
 
     MAX_HU_LUNG = -380
     MIN_HU_LUNG = -1500
@@ -95,7 +99,7 @@ def analyze(exam_path):
             for i in masked_lung
         ]
     )
-    print("Lung voxel count is: {}".format(lung_voxels))
+    logging.info("Lung voxel count is: {}".format(lung_voxels))
 
     x, y, z = (
         patient[0].PixelSpacing[0],
@@ -103,11 +107,11 @@ def analyze(exam_path):
         patient[0].SliceThickness,
     )
     voxel_volume = x * y * z
-    print("Voxel volume is {}".format(voxel_volume))
+    logging.info("Voxel volume is {}".format(voxel_volume))
 
     lung_volume = lung_voxels * voxel_volume
     volume = round(lung_volume / 1000.0) / 1000.0
-    print("Lung volume is {}L".format(volume))
+    logging.info("Lung volume is {}L".format(volume))
 
     stacked = np.stack(
         [i * ((i >= MIN_HU_LUNG) & (i <= MAX_HU_LUNG)) for i in masked_lung]
@@ -124,7 +128,7 @@ def analyze(exam_path):
     LAAS = [-950, -900, -850]
     for i in LAAS:
         count = len(hu_values[hu_values <= i])
-        print(str(i), "{:,}".format(count).replace(",", "'"), count * voxel_volume)
+        logging.info(str(i), "{:,}".format(count).replace(",", "'"), count * voxel_volume)
         key = "LAA" + str(i)
         result[key] = count * voxel_volume
 

@@ -10,7 +10,7 @@ from requests import post
 from rq import Queue
 
 from copd.results import results
-from rima.executor import copd, enrich_workpaths
+from rima.executor import copd, work_items
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile("config.cfg", silent=True)
@@ -33,25 +33,34 @@ assets.register("js_all", js)
 WORK_INBOX_DIR = "work/inbox"
 WORK_RESULTS_DIR = "work/results"
 
+
 @app.route("/")
 def main():
     queue = Queue("copd", connection=Redis())
     jobs = [x.id for x in queue.get_jobs()]
     copd_results = results(WORK_RESULTS_DIR)
-    return render_template("index.html", jobs=jobs, results=copd_results, version=version)
+    return render_template(
+        "index.html", jobs=jobs, results=copd_results, version=version
+    )
 
 
 @app.route("/receive", methods=["POST"])
 def transfer():
     """ Receive jobs and process them """
     data = request.get_json(force=True)
-    id = data.get("id")
-    data = enrich_workpaths(IMAGE_FOLDER, data)
-    with open(os.path.join(WORK_INBOX_DIR, (str(id) + ".json")), "w") as workfile:
-        json.dump(data, workfile)
+    items = work_items(IMAGE_FOLDER, data)
     headers = {"content-type": "application/json"}
     response = post(MOVA_DOWNLOAD_URL, json=data, headers=headers)
-    return jsonify({"status": "success"})
+    if response.status_code == 200:
+        for job in response.json()["jobs"]:
+            with open(
+                os.path.join(WORK_INBOX_DIR, (job["key"] + ".json")), "w"
+            ) as workfile:
+                json.dump(job, workfile)
+
+        return jsonify(response.json()["series_length"])
+    else:
+        return "Post failed", 500
 
 
 @app.route("/analyze")

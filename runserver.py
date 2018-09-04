@@ -13,7 +13,7 @@ if not os.path.exists(LOG_DIR):
     os.makedirs(LOG_DIR)
 
 daiquiri.setup(
-    level=logging.DEBUG,
+    level=logging.INFO,
     outputs=(
         daiquiri.output.File("logs/rima-errors.log", level=logging.ERROR),
         daiquiri.output.RotatingFile(

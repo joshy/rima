@@ -2,6 +2,7 @@ import json
 import os
 
 from copd.process import analyze
+from rima.work import key
 
 
 def copd(work):
@@ -11,9 +12,10 @@ def copd(work):
     return result
 
 
-def enrich_workpaths(image_base_dir, workjson):
+def work_items(image_base_dir, workjson):
     dir = workjson["dir"]
-
+    type = workjson["queue"]
+    items = []
     for entry in workjson["data"]:
         pid = entry["patient_id"]
         accession_nr = entry["accession_number"]
@@ -21,4 +23,7 @@ def enrich_workpaths(image_base_dir, workjson):
         entry["images_dir"] = os.path.join(
             image_base_dir, dir, pid, accession_nr, series_nr
         )
-    return workjson
+        entry["key"] = key(entry)
+        entry["type"] = type
+        items.append(entry)
+    return items
