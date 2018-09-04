@@ -18,15 +18,14 @@ $(function () {
 
     function loadAndViewImage(imageId) {
         var element = document.getElementById('ct_image');
-        console.log(element)
+        cornerstone.enable(element);
         try {
             var start = new Date().getTime();
-            console.log(imageId)
-            cornerstone.loadAndCacheImage(imageId).then(function (image) {
+            cornerstone.loadAndCacheImage(imageId).then(function(image) {
                 console.log(image);
                 var viewport = cornerstone.getDefaultViewportForImage(element, image);
                 cornerstone.displayImage(element, image, viewport);
-                if (loaded === false) {
+                if(loaded === false) {
                     cornerstoneTools.mouseInput.enable(element);
                     cornerstoneTools.mouseWheelInput.enable(element);
                     cornerstoneTools.wwwc.activate(element, 1); // ww/wc is the default tool for left mouse button
@@ -35,11 +34,11 @@ $(function () {
                     cornerstoneTools.zoomWheel.activate(element); // zoom is the default tool for middle mouse wheel
                     loaded = true;
                 }
-
-            }, function (err) {
-                console.error(err);
+            }, function(err) {
+                alert(err);
             });
-        } catch (err) {
+        }
+        catch(err) {
             alert(err);
         }
     }
