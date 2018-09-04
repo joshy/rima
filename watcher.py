@@ -1,10 +1,11 @@
+import glob
+import json
+import os
+
 from redis import Redis
 from rq import Queue, job
-import os
-import luigi
-import json
-import glob
 
+import luigi
 from copd.task import COPD
 from rima.work import key
 
@@ -27,8 +28,14 @@ class COPDWatcher(luigi.Task):
         for j in jobs:
             job_id = str(j["job_id"])
             download_job = queue.fetch_job(job_id)
-            if download_job.get_status() == job.JobStatus.FINISHED:
-                print("Download task with id {} finised, starting COPD processing".format(job_id))
+            if download_job is None:
+                print("No job found with id {}".format(job_id))
+            elif download_job.get_status() == job.JobStatus.FINISHED:
+                print(
+                    "Download task with id {} finised, starting COPD processing".format(
+                        job_id
+                    )
+                )
                 yield COPD(j, key(j))
             else:
                 print("Job with id {} is still in queue".format(job_id))
@@ -36,4 +43,3 @@ class COPDWatcher(luigi.Task):
 
 if __name__ == "__main__":
     luigi.run()
-
