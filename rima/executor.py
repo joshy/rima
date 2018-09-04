@@ -12,7 +12,7 @@ def copd(work):
     return result
 
 
-def work_items(image_base_dir, workjson):
+def process(image_base_dir, workjson):
     dir = workjson["dir"]
     type = workjson["queue"]
     items = []

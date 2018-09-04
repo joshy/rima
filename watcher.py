@@ -1,5 +1,5 @@
 from redis import Redis
-from rq import Queue
+from rq import Queue, job
 import os
 import luigi
 import json
@@ -24,13 +24,12 @@ def read_work():
 class COPDWatcher(luigi.Task):
     def run(self):
         jobs = read_work()
-        for job in jobs:
-            job_id = str(job["key"])
-
+        for j in jobs:
+            job_id = str(j["job_id"])
             download_job = queue.fetch_job(job_id)
-            if download_job is None:
-                print("Download task with id {} not anymore in queue".format(job_id))
-                yield COPD(job, key(job))
+            if download_job.get_status() == job.JobStatus.FINISHED:
+                print("Download task with id {} finised, starting COPD processing".format(job_id))
+                yield COPD(j, key(j))
             else:
                 print("Job with id {} is still in queue".format(job_id))
 

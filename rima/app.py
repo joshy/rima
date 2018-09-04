@@ -10,7 +10,8 @@ from requests import post
 from rq import Queue
 
 from copd.results import results
-from rima.executor import copd, work_items
+from rima.executor import copd, process
+from rima.work import work_items
 
 app = Flask(__name__, instance_relative_config=True)
 app.config.from_pyfile("config.cfg", silent=True)
@@ -36,11 +37,10 @@ WORK_RESULTS_DIR = "work/results"
 
 @app.route("/")
 def main():
-    queue = Queue("copd", connection=Redis())
-    jobs = [x.id for x in queue.get_jobs()]
     copd_results = results(WORK_RESULTS_DIR)
+    items = work_items(WORK_INBOX_DIR)
     return render_template(
-        "index.html", jobs=jobs, results=copd_results, version=version
+        "index.html", results=copd_results, work_items=items, version=version
     )
 
 
@@ -48,7 +48,7 @@ def main():
 def transfer():
     """ Receive jobs and process them """
     data = request.get_json(force=True)
-    items = work_items(IMAGE_FOLDER, data)
+    items = process(IMAGE_FOLDER, data)
     headers = {"content-type": "application/json"}
     response = post(MOVA_DOWNLOAD_URL, json=data, headers=headers)
     if response.status_code == 200:

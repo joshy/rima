@@ -1,0 +1,26 @@
+<div class="overflow-auto">
+    <table class="f6 w-100 center" cellspacing="0">
+        <thead>
+            <tr>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pl0 pa1 bg-white">#</th>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white ">PatientID</th>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white tl">AccessionNumber</th>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white tl">StudyDescription</th>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white tr">SeriesNumber</th>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white tr">Analyze</th>
+            </tr>
+        </thead>
+        <tbody class="lh-copy" style="padding: auto">
+            {% for work in work_items %}
+            <tr>
+                <td class="pl0 pa1 bb b--black-10 w-5">{{ loop.index }}</td>
+                <td class="pa1 bb b--black-10 w-20">{{ work['patient_id'] }}</td>
+                <td class="pa1 bb b--black-10 w-20 tl">{{ work['accession_number'] }}</td>
+                <td class="pa1 bb b--black-10 w-20 tl">{{ work['study_description'] }}</td>
+                <td class="pa1 bb b--black-10 w-5 tr">{{ work['series_number'] }}</td>
+                <td class="pa1 bb b--black-10 w-5 tr">{{ work['type'] | upper }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
