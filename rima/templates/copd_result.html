@@ -13,40 +13,69 @@
     {% include 'partials/header.html' %}
     <div class="b--black-10 mw8 center pt2">
         <h2 class="b--black-10 mw8 center pt2 h6">COPD</h2>
-        <div>
-            <article class="pa2">
-                <dl class="dib mr3">
-                    <dd class="f6 f6-ns ml0">Patiend ID</dd>
-                    <dd class="f5 f5-ns b ml0">{{ result['patient_id'] }}</dd>
-                </dl>
-                <dl class="dib mr3">
-                    <dd class="f6 f6-ns ml0">Birthdate</dd>
-                    <dd class="f5 f5-ns b ml0">{{ result['patient_birth_date'] | to_date }}</dd>
-                </dl>
-                <dl class="dib mr3">
-                    <dd class="f6 f6-ns ml0">Accession Number</dd>
-                    <dd class="f5 f5-ns b ml0">{{ result['accession_number'] }}</dd>
-                </dl>
-                <dl class="dib mr3">
-                    <dd class="f6 f6-ns ml0">Series Number</dd>
-                    <dd class="f5 f5-ns b ml0">{{ result['series_number'] }}</dd>
-                </dl>
+        <article class="pv2">
+            <dl class="dib mr3">
+                <dd class="f6 f6-ns ml0">Patiend ID</dd>
+                <dd class="f5 f5-ns b ml0">{{ result['patient_id'] }}</dd>
+            </dl>
+            <dl class="dib mr3">
+                <dd class="f6 f6-ns ml0">Birthdate</dd>
+                <dd class="f5 f5-ns b ml0">{{ result['patient_birth_date'] | to_date }}</dd>
+            </dl>
+            <dl class="dib mr3">
+                <dd class="f6 f6-ns ml0">Accession Number</dd>
+                <dd class="f5 f5-ns b ml0">{{ result['accession_number'] }}</dd>
+            </dl>
+            <dl class="dib mr3">
+                <dd class="f6 f6-ns ml0">Series Number</dd>
+                <dd class="f5 f5-ns b ml0">{{ result['series_number'] }}</dd>
+            </dl>
+            <dl class="dib mr3">
+                <dd class="f6 f6-ns ml0">StudyDescription</dd>
+                <dd class="f5 f5-ns b ml0">{{ result['study_description'] }}</dd>
+            </dl>
+            <dl class="dib mr3">
+                <dd class="f6 f6-ns ml0">Study Date</dd>
+                <dd class="f5 f5-ns b ml0">{{ result['study_date'] | to_date }}</dd>
+            </dl>
+        </article>
+        <article class="pv2">
+            <dl class="dib mr3">
+                <dd class="f6 f6-ns ml0">LAA-950</dd>
+                <dd class="f5 f5-ns b ml0">{{ result['copd']['LAA-950'] | round }}</dd>
+            </dl>
+            <dl class="dib mr3">
+                <dd class="f6 f6-ns ml0">LAA-900</dd>
+                <dd class="f5 f5-ns b ml0">{{ result['copd']['LAA-900'] | round  }}</dd>
+            </dl>
+            <dl class="dib mr3">
+                <dd class="f6 f6-ns ml0">LAA-850</dd>
+                <dd class="f5 f5-ns b ml0">{{ result['copd']['LAA-850'] | round  }}</dd>
+            </dl>
+            <dl class="dib mr3">
+                <dd class="f6 f6-ns ml0">PD15</dd>
+                <dd class="f5 f5-ns b ml0">{{ result['copd']['pd15'] }}</dd>
+            </dl>
+        </article>
+    </div>
 
-                <dl class="dib mr3">
-                    <dd class="f6 f6-ns ml0">StudyDescription</dd>
-                    <dd class="f5 f5-ns b ml0">{{ result['study_description'] }}</dd>
-                </dl>
-                <dl class="dib mr3">
-                    <dd class="f6 f6-ns ml0">Study Date</dd>
-                    <dd class="f5 f5-ns b ml0">{{ result['study_date'] | to_date }}</dd>
-                </dl>
-
-            </article>
+    <div class="b--black-10 mw8 center pt2">
+        <div id="ct_image" data-image-paths="{{image_paths}}" style="width:512px;height:512px;">
         </div>
     </div>
 
+
     {% assets "js_all" %}
-    <script type="text/javascript" src="{{ ASSET_URL }}"></script> {% endassets %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/cornerstone.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/cornerstoneMath.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/cornerstoneTools.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/dicomParser.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/cornerstoneWADOImageLoader.min.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/pako.min.js') }}"></script>
+    <script type="text/javascript" src="{{ ASSET_URL }}"></script>
+
+    {% endassets %}
 </body>
 
 </html>

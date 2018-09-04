@@ -3,7 +3,7 @@ import logging
 import os
 from datetime import datetime, timedelta
 
-from flask import Flask, jsonify, render_template, request
+from flask import Flask, jsonify, render_template, request, send_file
 from flask_assets import Bundle, Environment
 from redis import Redis
 from requests import post
@@ -25,9 +25,7 @@ IMAGE_FOLDER = app.config["IMAGE_FOLDER"]
 version = app.config["VERSION"] = "0.0.1"
 
 assets = Environment(app)
-js = Bundle(
-    "js/jquery-3.3.1.min.js", "js/script.js", filters="jsmin", output="gen/packed.js"
-)
+js = Bundle("js/script.js", filters="jsmin", output="gen/packed.js")
 assets.register("js_all", js)
 
 
@@ -75,5 +73,25 @@ def transfer():
 def details():
     key = request.args.get("key", "")
     result = load_result(WORK_RESULTS_DIR, key)
-    print(result)
-    return render_template("copd_result.html", result=result, version=version)
+    images_dir = result["images_dir"]
+    images = os.listdir(result["images_dir"])
+    prefix = (
+        "wadouri:http://localhost:9123/images/"
+        + result["patient_id"]
+        + "/"
+        + result["accession_number"]
+        + "/"
+        + result["series_number"]
+        + "/"
+    )
+    image_paths = list(map(lambda x: prefix + x, images))
+    return render_template(
+        "copd_result.html", result=result, image_paths=json.dumps(image_paths), version=version
+    )
+
+
+@app.route("/images/<path:path>")
+def images(path):
+    filename = os.path.join(IMAGE_FOLDER, 'copd', path)
+    print(filename, "\n")
+    return send_file(filename, mimetype='application/dicom')
