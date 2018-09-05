@@ -16,6 +16,7 @@ $(function () {
     };
     cornerstoneWADOImageLoader.webWorkerManager.initialize(config);
 
+    /*
     function loadAndViewImage(imageId) {
         var element = document.getElementById('ct_image');
         cornerstone.enable(element);
@@ -42,8 +43,9 @@ $(function () {
             alert(err);
         }
     }
+    */
 
-    /*
+
     function load(imageIds, element) {
         cornerstone.enable(element);
         var stack = {
@@ -67,10 +69,10 @@ $(function () {
                 cornerstoneTools.stackScrollWheel.activate(element);
                 cornerstoneTools.stackPrefetch.enable(element, 3);
             });
-    }*/
+    }
 
     //load(["wadouri:/images/ClearCanvas/USEcho/IM00001"], ct_image)
-    //load(image_paths, ct_image)
+    load(image_paths, ct_image)
     console.log(image_paths[0])
-    loadAndViewImage(image_paths[0])
+    //loadAndViewImage(image_paths[0])
 });

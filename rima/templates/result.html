@@ -2,16 +2,16 @@
     <table class="f6 w-100 center" cellspacing="0">
         <thead>
             <tr>
-                <th class="fw6 bb bw1 b--black-80 tl pb2 pl0 pa1 bg-white">#</th>
-                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white w-20">PatientID</th>
-                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white w-25 tl">AccessionNumber</th>
-                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white w-25 tl">StudyDescription</th>
-                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white tl">SeriesNumber</th>
-                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white tr pl3">LAA-950</th>
-                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white tr pl3">LAA-900</th>
-                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white tr v">LAA-850</th>
-                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white tr pl3">PD15</th>
-                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 bg-white tr pl3">Details</th>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pl0 pa1">#</th>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 w-20">PatientID</th>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 w-25 tl">AccessionNumber</th>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 w-25 tl">StudyDescription</th>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 tl">SeriesNumber</th>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 tr pl3">LAA-950</th>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 tr pl3">LAA-900</th>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 tr v">LAA-850</th>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 tr pl3">PD15</th>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 tr pl3">Details</th>
             </tr>
         </thead>
         <tbody class="lh-copy" style="padding: auto">
@@ -26,7 +26,7 @@
                 <td class="pa1 bb b--black-10 tr pl3">{{ result['copd']['LAA-900'] | round }}</td>
                 <td class="pa1 bb b--black-10 tr pl3">{{ result['copd']['LAA-850'] | round }}</td>
                 <td class="pa1 bb b--black-10 tr pl3">{{ result['copd']['pd15'] | round }}</td>
-                <td class="pa1 bb b--black-10 tr w-10 pl3"><a class="text-dark" target="_blank" href="/copd/show?key={{result['key']}}">Details <span class="oi iconic-sm" data-glyph="external-link"></span></a><i class="fas fa-external-link-square-alt"></i></td>
+                <td class="pa1 bb b--black-10 tr w-10 pl3"><a class="yellow" target="_blank" href="/copd/show?key={{result['key']}}">Details <span class="oi iconic-sm" data-glyph="external-link"></span></a><i class="fas fa-external-link-square-alt"></i></td>
             </tr>
             {% endfor %}
         </tbody>
