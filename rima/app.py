@@ -75,6 +75,8 @@ def details():
     result = load_result(WORK_RESULTS_DIR, key)
     images_dir = result["images_dir"]
     images = os.listdir(result["images_dir"])
+    # otherwise the images will be in random order
+    images.sort()
     prefix = (
         "wadouri:http://localhost:9123/images/"
         + result["patient_id"]
@@ -93,5 +95,4 @@ def details():
 @app.route("/images/<path:path>")
 def images(path):
     filename = os.path.join(IMAGE_FOLDER, 'copd', path)
-    print(filename, "\n")
     return send_file(filename, mimetype='application/dicom')

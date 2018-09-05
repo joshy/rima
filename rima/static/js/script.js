@@ -16,36 +16,6 @@ $(function () {
     };
     cornerstoneWADOImageLoader.webWorkerManager.initialize(config);
 
-    /*
-    function loadAndViewImage(imageId) {
-        var element = document.getElementById('ct_image');
-        cornerstone.enable(element);
-        try {
-            var start = new Date().getTime();
-            cornerstone.loadAndCacheImage(imageId).then(function(image) {
-                console.log(image);
-                var viewport = cornerstone.getDefaultViewportForImage(element, image);
-                cornerstone.displayImage(element, image, viewport);
-                if(loaded === false) {
-                    cornerstoneTools.mouseInput.enable(element);
-                    cornerstoneTools.mouseWheelInput.enable(element);
-                    cornerstoneTools.wwwc.activate(element, 1); // ww/wc is the default tool for left mouse button
-                    cornerstoneTools.pan.activate(element, 2); // pan is the default tool for middle mouse button
-                    cornerstoneTools.zoom.activate(element, 4); // zoom is the default tool for right mouse button
-                    cornerstoneTools.zoomWheel.activate(element); // zoom is the default tool for middle mouse wheel
-                    loaded = true;
-                }
-            }, function(err) {
-                alert(err);
-            });
-        }
-        catch(err) {
-            alert(err);
-        }
-    }
-    */
-
-
     function load(imageIds, element) {
         cornerstone.enable(element);
         var stack = {
@@ -71,8 +41,8 @@ $(function () {
             });
     }
 
-    //load(["wadouri:/images/ClearCanvas/USEcho/IM00001"], ct_image)
-    load(image_paths, ct_image)
-    console.log(image_paths[0])
-    //loadAndViewImage(image_paths[0])
+    load(image_paths, ct_image).then(function () {
+        console.log("reading done")
+    });
+
 });
