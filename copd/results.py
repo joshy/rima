@@ -18,5 +18,4 @@ def load_result(work_dir, key):
         with open(result_file[0], "r") as r:
             data = json.load(r)
         return data
-    else:
-        return None
+    return None
