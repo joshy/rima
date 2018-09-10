@@ -14,7 +14,7 @@ def load_exam(dir_path):
 def _load_scan(path):
     slices = [pydicom.dcmread(path + "/" + s) for s in os.listdir(path)]
     slices.sort(key=lambda x: int(x.InstanceNumber))
-    if len(slices) == 0:
+    if not slices:
         raise ValueError("DICOM folder {} seems to be empty, aborting".format(path))
 
     try:
