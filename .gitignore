@@ -104,6 +104,10 @@ venv.bak/
 .mypy_cache/
 .vscode
 
-
 # status files and other status tracking stuff
 work
+
+# ignore data dir
+data
+*.nii
+*.nii.gz
