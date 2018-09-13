@@ -1,7 +1,7 @@
 import logging
 import numpy as np
 
-from copd.segmentation import segment
+from copd.segmentation_watershed import segment
 from copd.loader import load_exam
 
 
