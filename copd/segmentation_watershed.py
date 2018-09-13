@@ -1,14 +1,16 @@
 import logging
+import os
 import timeit
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import pydicom
-import os
 import scipy.ndimage as ndimage
-import matplotlib.pyplot as plt
-
 from skimage import measure, morphology, segmentation
+
+from joblib import Parallel, delayed
+
 
 def _generate_markers(image):
     #Creation of the internal Marker
@@ -73,15 +75,16 @@ def _make_lungmask(image):
     #Apply the lungfilter (note the filtered areas being assigned -2000 HU)
     segmented = np.where(lungfilter == 1, image, -2000*np.ones((512, 512)))
 
-    return segmented
+    return segmented, lungfilter
 
 
 def segment(imgs):
     masked_lung = []
+    mask = []
     logging.info("Start lung segmentation")
     start = timeit.default_timer()
-    for img in imgs:
-        masked_lung.append(_make_lungmask(img))
+    r = Parallel(n_jobs=8)(delayed(_make_lungmask)(i) for i in imgs)
+    masked_lung, mask = zip(*r)
     stop = timeit.default_timer()
-    logging.info("Finised lung segmentation, took {}s".format(stop - start))
-    return masked_lung
+    logging.info("Finished lung segmentation, took {}s".format(stop - start))
+    return masked_lung, mask
