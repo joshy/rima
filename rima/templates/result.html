@@ -7,6 +7,7 @@
                 <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 w-25 tl">AccessionNumber</th>
                 <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 w-25 tl">StudyDescription</th>
                 <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 tl">SeriesNumber</th>
+                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 tl">SeriesDescription</th>
                 <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 tr pl3">LAA-950</th>
                 <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 tr pl3">LAA-900</th>
                 <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 tr v">LAA-850</th>
@@ -22,6 +23,7 @@
                 <td class="pa1 bb b--black-10 w-20 tl">{{ result['accession_number'] }}</td>
                 <td class="pa1 bb b--black-10 w-20 tl">{{ result['study_description'] }}</td>
                 <td class="pa1 bb b--black-10 w-5 tl">{{ result['series_number'] }}</td>
+                <td class="pa1 bb b--black-10 w-5 tl">{{ result['series_description'] }}</td>
                 <td class="pa1 bb b--black-10 tr pl3">{{ result['copd']['LAA-950'] | round }}</td>
                 <td class="pa1 bb b--black-10 tr pl3">{{ result['copd']['LAA-900'] | round }}</td>
                 <td class="pa1 bb b--black-10 tr pl3">{{ result['copd']['LAA-850'] | round }}</td>
