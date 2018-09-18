@@ -54,7 +54,6 @@ def main():
 def transfer():
     """ Receive jobs and process them """
     data = request.get_json(force=True)
-    items = process(IMAGE_FOLDER, data)
     headers = {"content-type": "application/json"}
     response = post(MOVA_DOWNLOAD_URL, json=data, headers=headers)
     if response.status_code == 200:
@@ -73,7 +72,6 @@ def transfer():
 def details():
     key = request.args.get("key", "")
     result = load_result(WORK_RESULTS_DIR, key)
-    images_dir = result["images_dir"]
     images = os.listdir(result["images_dir"])
     # otherwise the images will be in random order
     images.sort()
