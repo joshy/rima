@@ -1,9 +1,14 @@
 import logging
 import os
 
+import nibabel as nib
 import numpy as np
 import pydicom
 
+
+def load_nifti(file_path):
+    images = nib.load(file_path)
+    return None, images
 
 def load_exam(dir_path):
     patient = _load_scan(dir_path)

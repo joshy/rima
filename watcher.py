@@ -6,7 +6,9 @@ from redis import Redis
 from rq import Queue, job
 
 import luigi
-from copd.task import COPD
+from copd.tasks.copd import COPD
+from copd.tasks.dicom2nifti import D2N
+from copd.tasks.segmentation import Lung
 from rima.work import key
 
 queue = Queue("copd", connection=Redis())
@@ -34,7 +36,8 @@ class COPDWatcher(luigi.Task):
                         job_id
                     )
                 )
-                yield COPD(j, key(j))
+                yield Lung(data=j, key=key(j))
+                #yield COPD(data=j, key=key(j))
             else:
                 print("Job with id {} is still in queue".format(job_id))
 
