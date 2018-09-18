@@ -9,7 +9,7 @@ def analyze(exam_path):
     patient, imgs = load_exam(exam_path)
 
     logging.info("Finised loading image on folder: {}".format(exam_path))
-    masked_lung = segment(imgs)
+    masked_lung, _ = segment(imgs)
 
     MAX_HU_LUNG = -380
     MIN_HU_LUNG = -1500
