@@ -50,7 +50,7 @@ def main():
     )
 
 
-@app.route("/receive", methods=["POST"])
+@app.route("/analyze", methods=["POST"])
 def transfer():
     """ Receive jobs and process them """
     data = request.get_json(force=True)
