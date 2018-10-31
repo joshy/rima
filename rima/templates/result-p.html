@@ -1,8 +1,7 @@
-<div class="overflow-auto">
+<div class="overflow-auto pb5">
     <table class="f6 w-100 center" cellspacing="0">
         <thead>
             <tr>
-                <th class="fw6 bb bw1 b--black-80 tl pb2 pl0 pa1">#</th>
                 <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 w-20">PatientID</th>
                 <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 w-25 tl">AccessionNumber</th>
                 <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 w-25 tl">StudyDescription</th>
@@ -12,13 +11,10 @@
                 <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 tr pl3">LAA-900</th>
                 <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 tr v">LAA-850</th>
                 <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 tr pl3">PD15</th>
-                <th class="fw6 bb bw1 b--black-80 tl pb2 pa1 tl pl3">Details</th>
             </tr>
         </thead>
         <tbody class="lh-copy" style="padding: auto">
-            {% for result in results %}
             <tr>
-                <td class="pl0 pa1 bb b--black-10 w-5">{{ loop.index }}</td>
                 <td class="pa1 bb b--black-10 w-20">{{ result['patient_id'] }}</td>
                 <td class="pa1 bb b--black-10 w-20 tl">{{ result['accession_number'] }}</td>
                 <td class="pa1 bb b--black-10 w-20 tl">{{ result['study_description'] }}</td>
@@ -28,12 +24,7 @@
                 <td class="pa1 bb b--black-10 tr pl3">{{ result['copd']['LAA-900'] | round }}</td>
                 <td class="pa1 bb b--black-10 tr pl3">{{ result['copd']['LAA-850'] | round }}</td>
                 <td class="pa1 bb b--black-10 tr pl3">{{ result['copd']['pd15'] | round }}</td>
-                <td class="pa1 bb b--black-10 tl w-10 pl3">
-                    <a class="yellow" target="_blank" href="/copd/show?key={{result['key']}}">Details<span class="pl1 oi iconic-sm" data-glyph="external-link"><span><i class="fas fa-external-link-square-alt"></i></span>
-                    </a>
-                </td>
             </tr>
-            {% endfor %}
         </tbody>
     </table>
 </div>

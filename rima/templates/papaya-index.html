@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml" lang="en">
+<html lang="en">
 
 <head>
+	<title>RIMA Server</title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
 	<!-- iOS meta tags -->
@@ -10,22 +10,29 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
+	<link rel="stylesheet" href="{{url_for('static', filename='css/tachyons.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="/static/css/papaya.css" />
 	<script type="text/javascript" src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
 
 	<script type="text/javascript" src="/static/js/papaya.js"></script>
 
-	<title>Papaya Viewer</title>
 
 	<script type="text/javascript">
 		var params = [];
 		params["images"] = ["{{source_image}}", "{{mask_image}}"];
+		params["fullScreenPadding"] = false;
+		params["kiosMode"] = true;
 	</script>
 
 </head>
 
-<body>
-	<div class="papaya" data-params="params"></div>
+<body class="w-100 sans-serif bg-black washed-blue">
+	{% include 'partials/header.html' %}
+	<div class="b--black-10 mw8 center pt2">
+		<h2 class="b--black-10 mw8 center pt2 h6 bb pb2">Results - COPD</h2>
+		{% include 'result-p.html' %}
+		<div class="papaya pt4" data-params="params"></div>
+	</div>
 
 </body>
 

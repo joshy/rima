@@ -114,4 +114,4 @@ def p():
     s = "i" / p / "source.nii.gz"
     m = "i" / p / "lung_mask.nii.gz"
 
-    return render_template("papaya-index.html", source_image=s, mask_image=m)
+    return render_template("papaya-index.html", source_image=s, mask_image=m, result=result)
