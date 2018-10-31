@@ -4,6 +4,8 @@ import os
 import dicom2nifti
 import luigi
 
+from dicom2nifti.convert_dicom import dicom_series_to_nifti
+
 
 class D2N(luigi.Task):
     data = luigi.DictParameter()
@@ -15,7 +17,7 @@ class D2N(luigi.Task):
         accession_dir = "work/results/{}/{}".format(patient_id, accession_number)
         if not os.path.exists(accession_dir):
             os.makedirs(accession_dir)
-        dicom2nifti.convert_directory(self.data["images_dir"], accession_dir)
+        dicom_series_to_nifti(self.data["images_dir"], accession_dir + "/source.nii.gz")
         with self.output().open("w") as outfile:
             outfile.write("Converted to nifti")
 
