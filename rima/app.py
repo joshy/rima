@@ -2,6 +2,7 @@ import json
 import logging
 import os
 from datetime import datetime, timedelta
+from pathlib import Path
 
 from flask import Flask, jsonify, render_template, request, send_file
 from flask_assets import Bundle, Environment
@@ -9,7 +10,7 @@ from redis import Redis
 from requests import post
 from rq import Queue
 
-from copd.results import results, load_result
+from copd.results import load_result, results
 from rima.executor import copd, process
 from rima.work import work_items
 
@@ -54,6 +55,7 @@ def main():
 def transfer():
     """ Receive jobs and process them """
     data = request.get_json(force=True)
+    process(IMAGE_FOLDER, data)
     headers = {"content-type": "application/json"}
     response = post(MOVA_DOWNLOAD_URL, json=data, headers=headers)
     if response.status_code == 200:
@@ -94,3 +96,22 @@ def details():
 def images(path):
     filename = os.path.join(IMAGE_FOLDER, 'copd', path)
     return send_file(filename, mimetype='application/dicom')
+
+
+@app.route("/p/i/<path:path>")
+def i(path):
+    f = os.path.join("/home/joshy/github/rima", path)
+    return send_file(f, mimetype="appliaction/dicom")
+
+
+@app.route("/p/show")
+def p():
+    key = request.args.get("key", "")
+    result = load_result(WORK_RESULTS_DIR, key)
+
+    p = Path("work/results") / result['patient_id'] / result["accession_number"]
+
+    s = "i" / p / "source.nii.gz"
+    m = "i" / p / "lung_mask.nii.gz"
+
+    return render_template("papaya-index.html", source_image=s, mask_image=m)

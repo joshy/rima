@@ -36,8 +36,8 @@ class COPDWatcher(luigi.Task):
                         job_id
                     )
                 )
-                yield Lung(data=j, key=key(j))
-                #yield COPD(data=j, key=key(j))
+                #yield Lung(data=j, key=key(j))
+                yield COPD(data=j, key=key(j))
             else:
                 print("Job with id {} is still in queue".format(job_id))
 
