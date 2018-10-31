@@ -79,5 +79,5 @@ def segment(imgs):
     for img in imgs:
         masked_lung.append(_make_lungmask(img))
     stop = timeit.default_timer()
-    logging.info("Finised lung segmentation, took {}s".format(stop - start))
+    logging.info("Finished lung segmentation, took {}s".format(stop - start))
     return masked_lung
