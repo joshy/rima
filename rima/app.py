@@ -70,48 +70,20 @@ def transfer():
         return "Post failed", 500
 
 
-@app.route("/copd/show")
-def details():
-    key = request.args.get("key", "")
-    result = load_result(WORK_RESULTS_DIR, key)
-    images = os.listdir(result["images_dir"])
-    # otherwise the images will be in random order
-    images.sort()
-    prefix = (
-        "wadouri:http://localhost:9123/images/"
-        + result["patient_id"]
-        + "/"
-        + result["accession_number"]
-        + "/"
-        + result["series_number"]
-        + "/"
-    )
-    image_paths = list(map(lambda x: prefix + x, images))
-    return render_template(
-        "copd_result.html", result=result, image_paths=json.dumps(image_paths), version=version
-    )
-
-
-@app.route("/images/<path:path>")
+@app.route("/copd/images/<path:path>")
 def images(path):
-    filename = os.path.join(IMAGE_FOLDER, 'copd', path)
-    return send_file(filename, mimetype='application/dicom')
-
-
-@app.route("/p/i/<path:path>")
-def i(path):
     f = os.path.join("/home/joshy/github/rima", path)
     return send_file(f, mimetype="appliaction/dicom")
 
 
-@app.route("/p/show")
-def p():
+@app.route("/copd/show")
+def copd():
     key = request.args.get("key", "")
     result = load_result(WORK_RESULTS_DIR, key)
 
     p = Path("work/results") / result['patient_id'] / result["accession_number"]
 
-    s = "i" / p / "source.nii.gz"
-    m = "i" / p / "lung_mask.nii.gz"
+    s = "images" / p / "source.nii.gz"
+    m = "images" / p / "lung_mask.nii.gz"
 
     return render_template("papaya-index.html", source_image=s, mask_image=m, result=result)
