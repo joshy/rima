@@ -6,13 +6,10 @@ from redis import Redis
 from rq import Queue, job
 
 import luigi
-from copd.tasks.copd import COPD
-from copd.tasks.dicom2nifti import D2N
-from copd.tasks.segmentation import Lung
+from wrist_fracture.fracture import WristFracture
 from rima.work import key
 
-queue = Queue("copd", connection=Redis())
-wrist_fracture = Queue("wrist_fracture", connection=Redis())
+queue = Queue("wrist_fracture", connection=Redis())
 
 def read_work():
     work_files = glob.glob("work/inbox/*.json")
@@ -24,7 +21,7 @@ def read_work():
     return result
 
 
-class COPDWatcher(luigi.Task):
+class Watcher(luigi.Task):
     def run(self):
         jobs = read_work()
         for j in jobs:
@@ -32,11 +29,11 @@ class COPDWatcher(luigi.Task):
             download_job = queue.fetch_job(job_id)
             if download_job is None or download_job.get_status() == job.JobStatus.FINISHED:
                 print(
-                    "Download task with id {} finised, starting COPD processing".format(
+                    "Download task with id {} finised, starting wrist fracture classification".format(
                         job_id
                     )
                 )
-                yield COPD(data=j, key=key(j))
+                yield WristFracture(data=j, key=key(j))
             else:
                 print("Job with id {} is still in queue".format(job_id))
 
